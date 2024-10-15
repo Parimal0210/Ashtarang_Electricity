@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ashtarang</groupId>
 	<artifactId>Ashtarang_Electricity_Invoice</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Ashtarang_Electricity_Invoice</name>
 	<description>Electricity invoice project for Spring Boot</description>
 	<properties>
