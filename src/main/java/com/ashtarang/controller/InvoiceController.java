@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/assessment/v1")
+@RequestMapping("/invoice/v1")
 @CrossOrigin(value = "*")
 public class InvoiceController {
 
