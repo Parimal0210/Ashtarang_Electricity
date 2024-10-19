@@ -1,3 +1,7 @@
-FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-ENTRYPOINT ["java","-jar"," Ashtarang_Electricity_Invoice-0.0.1.jar"]
+FROM eclipse-temurin:21-jdk-alpine
+COPY --from=build /target/Ashtarang_Electricity_Invoice-0.0.1.jar demo.jar
+ENTRYPOINT ["java","-jar"," demo.jar"]
