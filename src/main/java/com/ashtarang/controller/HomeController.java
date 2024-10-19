@@ -16,7 +16,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public ResponseEntity<String> getInfo(){
-		String str  = "Hello World!";
+		String str  = "Hello Babdeee! I am here to cheer you up! Hurray!!!";
 		System.out.println(str);
 		return ResponseEntity.status(200).body(str);
 	}
