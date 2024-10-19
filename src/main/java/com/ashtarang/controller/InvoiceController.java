@@ -17,7 +17,7 @@ public class InvoiceController {
 
 	@GetMapping("/getInfo")
 	public ResponseEntity<String> getInfo(){
-		String str  = "Hello World!";
+		String str  = "Hello World get INVOICE!";
 		System.out.println(str);
 		return ResponseEntity.status(200).body(str);
 	}
