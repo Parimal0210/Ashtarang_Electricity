@@ -1,3 +1,8 @@
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/Ashtarang_Electricity_Invoice-0.0.1.jar demo.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","target/Ashtarang_Electricity_Invoice-0.0.1.jar"]
+ENTRYPOINT ["java","-jar","demo.jar"]
