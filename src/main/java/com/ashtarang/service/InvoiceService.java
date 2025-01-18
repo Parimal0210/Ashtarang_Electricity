@@ -12,4 +12,6 @@ public interface InvoiceService {
 
 	ServerResponse<String> saveInvoice(InvoiceDTO invoiceDTO);
 
+	ServerResponse<String> amountPaid();
+
 }

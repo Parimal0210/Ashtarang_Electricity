@@ -41,4 +41,11 @@ public class InvoiceController {
 		System.out.println(res);
 		return ResponseEntity.status(res.getStatusCode()).body(res);
 	}
+	
+	@GetMapping("/amountPaid")
+	public ResponseEntity<ServerResponse<String>> amountPaid(){
+		ServerResponse<String> res = invoiceService.amountPaid();
+		System.out.println(res);
+		return ResponseEntity.status(res.getStatusCode()).body(res);
+	}
 }

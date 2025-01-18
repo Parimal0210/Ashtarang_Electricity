@@ -27,11 +27,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 		ServerResponse<InvoiceDTO> res = new ServerResponse<>();
 		try {
 			log.info("Generating Invoice");
-			Calendar calendar = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("MMMM");
-			String month = sdf.format(calendar.getTime());
-	        calendar.add(Calendar.MONTH, -1);
-	        String prevMonth = sdf.format(calendar.getTime());
+			String month = getCurrentMonth();
+	        
+			String prevMonth = getPrevMonth();
 	        
 	        Optional<Invoice> invOp = invoiceRepository.findByMonth(prevMonth);
 	        
@@ -69,6 +67,19 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoiceDTO;
 	}
 
+	private String getPrevMonth() {
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMM");
+        calendar.add(Calendar.MONTH, -1);
+        return sdf.format(calendar.getTime());
+	}
+	
+	private String getCurrentMonth() {
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMM");
+		return sdf.format(calendar.getTime());
+	}
+	
 	@Override
 	public ServerResponse<String> saveInvoice(InvoiceDTO invoiceDTO) {
 		ServerResponse<String> res = new ServerResponse<>();
@@ -93,7 +104,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			invoice.setLastDateUnit(invoiceDTO.getNewDateUnit());
 			invoice.setPrevAmt(invoiceDTO.getTotalAmount());
 			invoice.setMonth(month);
-			invoice.setAmtPaid(true);
+			invoice.setAmtPaid(false);
 			
 			
 			invoiceRepository.save(invoice);
@@ -105,6 +116,37 @@ public class InvoiceServiceImpl implements InvoiceService {
 			
 		} catch (Exception e) {
 			log.error("Exception while saving invoice : ",e);
+			res.setStatusCode(400);
+			res.setStatusMessage(e.getMessage());
+		}
+		return res;
+	}
+
+	@Override
+	public ServerResponse<String> amountPaid() {
+		ServerResponse<String> res = new ServerResponse<>();
+		try {
+			String month = getCurrentMonth();
+			
+			Optional<Invoice> invOp = invoiceRepository.findByMonth(month);
+			
+			if(invOp.isPresent()) {
+				Invoice inv = invOp.get();
+				inv.setAmtPaid(true);
+				inv.setPrevAmt(0.0);
+				invoiceRepository.save(inv);
+				
+				res.setStatusCode(200);
+				res.setStatusMessage("Invoice of "+month+" squared off.");
+				res.setResponse("Invoice of "+month+" squared off.");
+			} else {
+				log.info("Invoice of "+month+" Not found.");
+				res.setStatusCode(400);
+				res.setStatusMessage("Invoice of "+month+" Not found.");
+			}
+			
+		} catch (Exception e) {
+			log.error("Exception while saving paid amt changes in invoice : ",e);
 			res.setStatusCode(400);
 			res.setStatusMessage(e.getMessage());
 		}
