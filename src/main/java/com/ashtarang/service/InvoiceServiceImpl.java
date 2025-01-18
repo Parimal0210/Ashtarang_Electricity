@@ -50,6 +50,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			
 		} catch (Exception e) {
 			log.error("Exception while generating invoice : ",e);
+			res.setStatusCode(400);
+			res.setStatusMessage(e.getMessage());
 		}
 		return res;
 	}
@@ -103,6 +105,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			
 		} catch (Exception e) {
 			log.error("Exception while saving invoice : ",e);
+			res.setStatusCode(400);
+			res.setStatusMessage(e.getMessage());
 		}
 		return res;
 	}
